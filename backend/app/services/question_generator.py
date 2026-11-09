@@ -119,7 +119,14 @@ class QuestionGeneratorService:
 
         # Adaptive questions tailored to role & topics
         if "AI" in target_role or "ML" in target_role:
-            if "Optimization" in topic or "Neural" in topic:
+            if "Ensemble" in topic:
+                question_text = (
+                    f"Comparing ensemble paradigms discussed in {book}: How does Bootstrap Aggregation (Bagging) in Random Forests "
+                    f"differ in variance and bias reduction from Gradient Boosting (GBDT)? What is the mathematical significance of "
+                    f"predicting pseudo-residuals (negative gradient of loss) in sequential boosting iterations?"
+                )
+                expected = ["Bagging decorrelation & variance reduction", "Boosting sequential residual fitting", "Pseudo-residuals as negative gradients", "Learning rate shrinkage"]
+            elif "Optimization" in topic or "Neural" in topic:
                 question_text = (
                     f"In your background you worked with {top_skill} and neural architectures. Grounded in "
                     f"{book} ('{chapter}'), when training deep networks with gradient descent, how do plateaus and "
@@ -127,27 +134,6 @@ class QuestionGeneratorService:
                     f"momentum term to weight updates, and how it mitigates high-curvature oscillations compared to standard SGD."
                 )
                 expected = ["Momentum velocity vector", "Damping oscillations in high curvature", "Escaping saddle points / local minima", "Learning rate scheduling"]
-            elif "Overfitting" in topic or "Generalization" in topic:
-                question_text = (
-                    f"Regarding model validation and generalization from {book}: Explain the Bias-Variance "
-                    f"decomposition of generalization error. Compare L1 (Lasso) vs L2 (Ridge) regularization mathematically "
-                    f"and explain geometrically why L1 creates sparse feature weights while L2 smoothly shrinks them toward zero."
-                )
-                expected = ["Bias^2 + Variance + Irreducible Error", "L1 diamond L1-ball geometry", "Feature sparsity vs shrinkage", "Multicollinearity handling"]
-            elif "SVM" in topic or "Statistical" in topic:
-                question_text = (
-                    f"Drawing from {book} on Support Vector Machines: Explain how the Maximum Margin Hyperplane is "
-                    f"formulated mathematically as a constrained optimization problem. What is the role of support vectors, "
-                    f"and how does the Kernel Trick (e.g. RBF kernel) enable non-linear classification without explicit high-dimensional mapping?"
-                )
-                expected = ["Margin maximization 2/||w||", "Support vectors on margin boundary", "Kernel trick phi(x) . phi(z)", "Slack variables for soft margin"]
-            elif "Ensemble" in topic:
-                question_text = (
-                    f"Comparing ensemble paradigms discussed in {book}: How does Bootstrap Aggregation (Bagging) in Random Forests "
-                    f"differ in variance and bias reduction from Gradient Boosting (GBDT)? What is the mathematical significance of "
-                    f"predicting pseudo-residuals (negative gradient of loss) in sequential boosting iterations?"
-                )
-                expected = ["Bagging decorrelation & variance reduction", "Boosting sequential residual fitting", "Pseudo-residuals as negative gradients", "Learning rate shrinkage"]
             else:
                 question_text = (
                     f"Based on principles in {book} ({chapter}): Explain how the Naive Bayes assumption of conditional independence "

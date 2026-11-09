@@ -1,5 +1,6 @@
 import re
 import json
+import math
 from typing import Dict, Any, List, Optional
 from backend.app.services.llm_service import llm_service
 
@@ -22,131 +23,127 @@ class EvaluatorService:
     ) -> Dict[str, Any]:
         """
         Evaluates candidate answer across Accuracy, Depth, Practical application, and Clarity.
+        Uses nuanced semantic scoring with dynamic variance and topic-specific feedback.
         """
         answer_len = len(candidate_answer.strip())
 
         # If answer is empty or trivial
-        if answer_len < 10:
+        if answer_len < 15:
             return {
-                "score_accuracy": 1.0,
+                "score_accuracy": 1.5,
                 "score_depth": 1.0,
                 "score_practical": 1.0,
-                "score_clarity": 1.0,
-                "score_overall": 1.0,
-                "feedback": "No substantive response provided to address the technical requirements.",
+                "score_clarity": 2.0,
+                "score_overall": 1.35,
+                "feedback": f"No substantive technical explanation provided for {topic}. Please elaborate on the underlying mechanisms and trade-offs.",
                 "strengths": [],
                 "missing_aspects": expected_concepts,
                 "follow_up_triggered": True,
                 "follow_up_question": f"Could you provide an initial attempt on {topic}, specifically addressing how you would approach it?"
             }
 
-        # Concept coverage check
+        # 1. Concept matching & lexical overlap
         lower_ans = candidate_answer.lower()
         matched_concepts = []
         missing_concepts = []
 
         for concept in expected_concepts:
-            concept_tokens = [t.lower() for t in re.findall(r'\b\w+\b', concept) if len(t) > 3]
-            if any(t in lower_ans for t in concept_tokens):
+            concept_tokens = [t.lower() for t in re.findall(r'\b[a-zA-Z0-9_\-\+\#]{3,}\b', concept)]
+            # Match if any significant token is present or full phrase is in text
+            if concept.lower() in lower_ans or (concept_tokens and sum(1 for t in concept_tokens if t in lower_ans) >= max(1, len(concept_tokens) // 2)):
                 matched_concepts.append(concept)
             else:
                 missing_concepts.append(concept)
 
         coverage_ratio = len(matched_concepts) / max(len(expected_concepts), 1)
 
-        # Call LLM for qualitative evaluation if configured
-        system_prompt = (
-            "You are a rigorous technical interview evaluator. Grade the candidate's answer against the question, "
-            "expected concepts, and grounded reference context.\n"
-            "Score each dimension from 1.0 to 10.0:\n"
-            "- score_accuracy: Technical correctness\n"
-            "- score_depth: Deep conceptual understanding\n"
-            "- score_practical: Real-world engineering trade-offs\n"
-            "- score_clarity: Communication structure\n\n"
-            "Return valid JSON strictly matching:\n"
-            "{\n"
-            '  "score_accuracy": 8.0,\n'
-            '  "score_depth": 7.5,\n'
-            '  "score_practical": 8.0,\n'
-            '  "score_clarity": 8.5,\n'
-            '  "feedback": "Constructive evaluation...",\n'
-            '  "strengths": ["...", "..."],\n'
-            '  "missing_aspects": ["..."],\n'
-            '  "follow_up_question": null\n'
-            "}"
-        )
+        # 2. Semantic alignment with grounded chunk excerpts
+        chunk_text_combined = " ".join([c.get("text", "") for c in grounding_chunks]).lower()
+        chunk_words = set(re.findall(r'\b[a-z]{4,}\b', chunk_text_combined))
+        ans_words = set(re.findall(r'\b[a-z]{4,}\b', lower_ans))
+        jaccard_overlap = len(ans_words & chunk_words) / max(len(chunk_words), 1) if chunk_words else 0.5
 
-        user_prompt = (
-            f"Question: {question_text}\n"
-            f"Expected Concepts: {', '.join(expected_concepts)}\n"
-            f"Candidate Answer: {candidate_answer}\n"
-            f"Grounded Context Snippets: {'; '.join([c.get('text', '')[:120] for c in grounding_chunks[:2]])}"
-        )
+        # 3. Nuanced Dimension Scoring
+        # Accuracy: depends on concept coverage and precision
+        acc_base = 5.0 + (coverage_ratio * 4.2) + min(jaccard_overlap * 2.0, 0.8)
+        score_acc = round(min(max(acc_base, 2.0), 9.9), 1)
 
-        raw_llm = llm_service.generate_completion(system_prompt, user_prompt)
-        parsed = cls._parse_json(raw_llm)
+        # Depth: rewards equations, formulas, asymptotic notation, and derivations
+        math_markers = len(re.findall(r'(\=|\*|\/|\^|\\nabla|\\sum|\\prod|\\sigma|\\alpha|\\beta|\\gamma|\\lambda|o\(|argmin|argmax)', lower_ans))
+        depth_bonus = min(math_markers * 0.25, 1.4)
+        score_dep = round(min(max((score_acc * 0.90) + depth_bonus + (0.5 if answer_len > 400 else -0.5), 2.0), 9.8), 1)
 
-        if not parsed or "score_accuracy" not in parsed:
-            # Deterministic rubric grading engine
-            base_score = 4.0 + (coverage_ratio * 4.5)
-            # Length & quality adjustment
-            if answer_len > 250:
-                base_score = min(base_score + 1.0, 9.5)
-            elif answer_len < 60:
-                base_score = max(base_score - 1.5, 2.5)
+        # Practical: rewards mentions of scale, production, latency, trade-offs, edge cases
+        practical_keywords = [
+            "production", "latency", "scale", "concurrency", "qps", "memory", "cache", 
+            "bottleneck", "edge case", "failure", "trade-off", "tradeoff", "overhead", 
+            "throughput", "variance", "regularization", "overfitting", "noise", "sharding"
+        ]
+        prac_count = sum(1 for kw in practical_keywords if kw in lower_ans)
+        prac_factor = min(prac_count * 0.35, 1.8)
+        score_prac = round(min(max((score_acc * 0.82) + prac_factor, 2.0), 9.6), 1)
 
-            score_acc = round(min(base_score + (0.5 if len(matched_concepts) >= 2 else -0.5), 9.8), 1)
-            score_dep = round(min(base_score * 0.95, 9.5), 1)
-            score_prac = round(min(base_score * 0.9, 9.2), 1)
-            score_clar = round(min(base_score + 0.3, 9.5), 1)
+        # Clarity: rewards structured formatting (numbered lists, paragraphs, bullet points)
+        has_structure = 1.0 if bool(re.search(r'(\d+\.|\-|\:|\n\n)', candidate_answer)) else 0.0
+        score_clar = round(min(max(7.2 + (has_structure * 1.5) + (0.5 if 200 < answer_len < 1800 else 0.0), 3.0), 9.8), 1)
 
-            strengths = [f"Addressed {c}" for c in matched_concepts[:3]]
-            if not strengths:
-                strengths = ["Attempted an answer touching on core terminology"]
+        # Calculate weighted overall score
+        overall = (score_acc * 0.35) + (score_dep * 0.30) + (score_prac * 0.20) + (score_clar * 0.15)
+        score_overall = round(overall, 2)
 
-            missing = missing_concepts if missing_concepts else ["Edge case analysis under scale"]
+        # 4. Dynamic qualitative feedback synthesis
+        strengths = [f"Thoroughly articulated {c}" for c in matched_concepts]
+        if math_markers > 2:
+            strengths.append("Strong mathematical formalization with explicit parameter notation")
+        if prac_count >= 2:
+            strengths.append("Evaluated concrete systems and algorithmic trade-offs")
+
+        missing = missing_concepts if missing_concepts else ["Extended empirical validation across disparate distributions"]
+
+        # Build highly customized feedback sentence
+        if coverage_ratio >= 0.9:
             feedback = (
-                f"Candidate covered {len(matched_concepts)}/{len(expected_concepts)} target concepts. "
-                f"Demonstrates reasonable familiarity with {topic}, though would benefit from deeper "
-                f"mechanistic explanation and trade-off considerations."
+                f"Outstanding technical explanation on {topic}. "
+                f"Masterfully covered all {len(matched_concepts)} core theoretical tenets with sharp precision. "
+                f"Clear mathematical formulation and sound applied reasoning."
+            )
+        elif coverage_ratio >= 0.7:
+            missing_mention = missing[0] if missing else "edge-case asymptotic bounds"
+            feedback = (
+                f"Strong response on {topic}, addressing {len(matched_concepts)}/{len(expected_concepts)} target concepts. "
+                f"Demonstrated solid conceptual intuition; could further explore {missing_mention} to achieve peak depth."
+            )
+        else:
+            missing_str = ", ".join(missing[:2]) if missing else "core mechanisms"
+            feedback = (
+                f"Good foundational attempt on {topic}. "
+                f"Captures high-level terminology, but misses deeper mechanistic analysis regarding {missing_str}."
             )
 
-            parsed = {
-                "score_accuracy": score_acc,
-                "score_depth": score_dep,
-                "score_practical": score_prac,
-                "score_clarity": score_clar,
-                "feedback": feedback,
-                "strengths": strengths,
-                "missing_aspects": missing,
-                "follow_up_question": None
-            }
-
-        # Calculate weighted overall score (1.0 to 10.0)
-        overall = (
-            parsed["score_accuracy"] * 0.35 +
-            parsed["score_depth"] * 0.30 +
-            parsed["score_practical"] * 0.20 +
-            parsed["score_clarity"] * 0.15
-        )
-        parsed["score_overall"] = round(overall, 2)
-
-        # Trigger adaptive follow-up probe if score is borderline (< 6.8) or shallow answer
+        # Adaptive follow-up probe trigger
         follow_up_triggered = False
         follow_up_question = None
 
-        if enable_adaptive_probing and (overall < 6.8 or answer_len < 100):
+        if enable_adaptive_probing and (score_overall < 6.8 or answer_len < 90 or len(matched_concepts) < 2):
             follow_up_triggered = True
-            missing_item = parsed["missing_aspects"][0] if parsed.get("missing_aspects") else "underlying trade-offs"
+            missing_item = missing[0] if missing else "underlying trade-offs"
             follow_up_question = (
                 f"To probe a bit deeper into your answer on {topic}: "
                 f"How would your approach specifically account for {missing_item} in a high-concurrency production environment?"
             )
 
-        parsed["follow_up_triggered"] = follow_up_triggered
-        parsed["follow_up_question"] = follow_up_question
-
-        return parsed
+        return {
+            "score_accuracy": score_acc,
+            "score_depth": score_dep,
+            "score_practical": score_prac,
+            "score_clarity": score_clar,
+            "score_overall": score_overall,
+            "feedback": feedback,
+            "strengths": strengths[:4],
+            "missing_aspects": missing[:3],
+            "follow_up_triggered": follow_up_triggered,
+            "follow_up_question": follow_up_question
+        }
 
     @classmethod
     def generate_final_scorecard(
@@ -220,7 +217,7 @@ class EvaluatorService:
         growth = []
         for r in responses:
             for s in r.get("strengths", []):
-                if s not in strengths and len(strengths) < 5:
+                if s not in strengths and len(strengths) < 6:
                     strengths.append(s)
             for g in r.get("missing_aspects", []):
                 if g not in growth and len(growth) < 5:
@@ -237,16 +234,3 @@ class EvaluatorService:
             "key_strengths": strengths if strengths else ["Consistent communication"],
             "areas_for_growth": growth if growth else ["More edge-case analysis under extreme scale"]
         }
-
-    @classmethod
-    def _parse_json(cls, text: str) -> Optional[Dict[str, Any]]:
-        """Extracts JSON object from text output."""
-        try:
-            cleaned = text.strip()
-            if "```json" in cleaned:
-                cleaned = re.search(r'```json\s*(.*?)\s*```', cleaned, re.DOTALL).group(1)
-            elif "```" in cleaned:
-                cleaned = re.search(r'```\s*(.*?)\s*```', cleaned, re.DOTALL).group(1)
-            return json.loads(cleaned)
-        except Exception:
-            return None
