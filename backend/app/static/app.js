@@ -219,13 +219,98 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
     }
   }
 
-  speakQuestion() {
-    if (!window.speechSynthesis || !this.currentQuestion) return;
+  playTTS() {
+    if (!window.speechSynthesis || !this.currentQuestion) {
+      alert("Speech synthesis is not supported or no question is active.");
+      return;
+    }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(this.currentQuestion.question_text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    window.speechSynthesis.speak(utterance);
+    this.currentUtterance = new SpeechSynthesisUtterance(this.currentQuestion.question_text);
+    this.currentUtterance.rate = 1.0;
+    this.currentUtterance.pitch = 1.0;
+
+    const statusEl = document.getElementById("tts-status");
+    const pauseLabel = document.getElementById("tts-pause-label");
+
+    this.currentUtterance.onstart = () => {
+      if (statusEl) {
+        statusEl.innerText = "Speaking...";
+        statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 animate-pulse";
+      }
+      if (pauseLabel) pauseLabel.innerText = "Pause";
+    };
+
+    this.currentUtterance.onpause = () => {
+      if (statusEl) {
+        statusEl.innerText = "Paused";
+        statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300";
+      }
+      if (pauseLabel) pauseLabel.innerText = "Resume";
+    };
+
+    this.currentUtterance.onresume = () => {
+      if (statusEl) {
+        statusEl.innerText = "Speaking...";
+        statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 animate-pulse";
+      }
+      if (pauseLabel) pauseLabel.innerText = "Pause";
+    };
+
+    this.currentUtterance.onend = () => {
+      this.resetTTSUI();
+    };
+
+    this.currentUtterance.onerror = () => {
+      this.resetTTSUI();
+    };
+
+    window.speechSynthesis.speak(this.currentUtterance);
+  }
+
+  pauseOrResumeTTS() {
+    if (!window.speechSynthesis) return;
+    const statusEl = document.getElementById("tts-status");
+    const pauseLabel = document.getElementById("tts-pause-label");
+
+    if (window.speechSynthesis.speaking) {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        if (statusEl) {
+          statusEl.innerText = "Speaking...";
+          statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 animate-pulse";
+        }
+        if (pauseLabel) pauseLabel.innerText = "Pause";
+      } else {
+        window.speechSynthesis.pause();
+        if (statusEl) {
+          statusEl.innerText = "Paused";
+          statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300";
+        }
+        if (pauseLabel) pauseLabel.innerText = "Resume";
+      }
+    } else {
+      this.playTTS();
+    }
+  }
+
+  stopTTS() {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    this.resetTTSUI();
+  }
+
+  resetTTSUI() {
+    const statusEl = document.getElementById("tts-status");
+    const pauseLabel = document.getElementById("tts-pause-label");
+    if (statusEl) {
+      statusEl.innerText = "Idle";
+      statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400";
+    }
+    if (pauseLabel) pauseLabel.innerText = "Pause";
+  }
+
+  speakQuestion() {
+    this.playTTS();
   }
 
   toggleCitations() {
@@ -290,6 +375,7 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
   }
 
   async fetchCurrentQuestion() {
+    this.stopTTS();
     // Reset inputs & hide evaluation card
     this.answerText.value = "";
     this.charCount.innerText = "0 characters";

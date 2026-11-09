@@ -36,6 +36,7 @@ export default function App() {
   const [isRecording, setIsRecording] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scorecard, setScorecard] = useState(null);
+  const [ttsStatus, setTtsStatus] = useState('idle'); // 'idle', 'speaking', 'paused'
 
   useEffect(() => {
     api.checkBackendHealth()
@@ -150,11 +151,37 @@ PROJECTS:
     }
   };
 
-  const speakQuestion = () => {
+  const handlePlayTTS = () => {
     if (!window.speechSynthesis || !currentQuestion) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(currentQuestion.question_text);
+    u.onstart = () => setTtsStatus('speaking');
+    u.onpause = () => setTtsStatus('paused');
+    u.onresume = () => setTtsStatus('speaking');
+    u.onend = () => setTtsStatus('idle');
+    u.onerror = () => setTtsStatus('idle');
     window.speechSynthesis.speak(u);
+  };
+
+  const handlePauseResumeTTS = () => {
+    if (!window.speechSynthesis) return;
+    if (window.speechSynthesis.speaking) {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        setTtsStatus('speaking');
+      } else {
+        window.speechSynthesis.pause();
+        setTtsStatus('paused');
+      }
+    } else {
+      handlePlayTTS();
+    }
+  };
+
+  const handleStopTTS = () => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    setTtsStatus('idle');
   };
 
   return (
@@ -270,15 +297,28 @@ PROJECTS:
 
               <h2 className="text-lg font-semibold text-slate-100 leading-relaxed">{currentQuestion.question_text}</h2>
 
-              <div className="flex items-center justify-between pt-2">
-                <div className="text-xs text-slate-400 flex items-center space-x-2">
-                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                  <span>{currentQuestion.context_rationale}</span>
+              {/* TTS Audio Controls */}
+              <div className="flex items-center justify-between pt-3 border-t border-slate-800/80 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs font-semibold text-slate-400 flex items-center space-x-1.5">
+                    <Volume2 className="w-4 h-4 text-indigo-400" />
+                    <span>AI Voice:</span>
+                  </span>
+                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded ${ttsStatus === 'speaking' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 animate-pulse' : ttsStatus === 'paused' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-900 text-slate-400 border border-slate-800'}`}>
+                    {ttsStatus === 'speaking' ? 'Speaking...' : ttsStatus === 'paused' ? 'Paused' : 'Idle'}
+                  </span>
                 </div>
-                <button onClick={speakQuestion} className="text-xs text-slate-400 hover:text-indigo-300 flex items-center space-x-1">
-                  <Volume2 className="w-3.5 h-3.5" />
-                  <span>TTS Audio</span>
-                </button>
+                <div className="flex items-center space-x-1.5">
+                  <button onClick={handlePlayTTS} className="px-2.5 py-1 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 text-xs">
+                    Play
+                  </button>
+                  <button onClick={handlePauseResumeTTS} className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs">
+                    {ttsStatus === 'paused' ? 'Resume' : 'Pause'}
+                  </button>
+                  <button onClick={handleStopTTS} className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs">
+                    Reset
+                  </button>
+                </div>
               </div>
             </div>
 
