@@ -20,7 +20,6 @@ Screenly is a modular, production-ready AI interview and screening system design
 - [Project Structure](#-project-structure)
 - [Quick Start Guide](#-quick-start-guide)
 - [API Reference](#-api-reference)
-- [Demo Video Walkthrough Script](#-demo-video-walkthrough-script)
 - [License](#-license)
 
 ---
@@ -347,32 +346,6 @@ python backend/tests/test_interview_flow.py
 - `GET /api/knowledge/status`: Returns loaded textbooks and chunk statistics.
 - `POST /api/knowledge/search`: Interactive RAG vector similarity search test tool.
 - `POST /api/knowledge/ingest`: Ingests custom documentation or textbook chapters into the vector store.
-
----
-
-## 🎥 Demo Video Walkthrough Script
-
-Use this 3-minute structured walkthrough to record your demonstration video:
-
-1. **Introduction (0:00 - 0:30)**:
-   - *"Hello, this is Yash Darji presenting Screenly, an AI-powered role-adaptive candidate screening system with textbook-grounded Retrieval-Augmented Generation."*
-   - Show the initial setup interface. Click **"Sample AI/ML"** or upload a resume PDF. Select **"AI / Machine Learning Engineer"**.
-
-2. **Resume Parsing & Grounding (0:30 - 1:00)**:
-   - Click **"Parse Profile & Start Technical Screening"**.
-   - Explain how the system parsed the skills (PyTorch, Docker, RAG) and synthesized personalized topics grounded in *Machine Learning* by Tom Mitchell and *The Hundred-Page Machine Learning Book* by Andriy Burkov.
-
-3. **Interactive Interview & Traceability (1:00 - 2:00)**:
-   - Highlight the generated question. Click **"View RAG Citations"** to show the slide-out drawer revealing the exact textbook excerpt, chapter title, and cosine similarity score.
-   - Demonstrate the **TTS Audio** button (*"Listen to question"*).
-   - Enter a technical answer (or use the **Voice Input** mic button). Click **"Submit Answer"**.
-   - Show the immediate 4-dimension rubric feedback (Accuracy, Depth, Practical, Clarity).
-   - If an adaptive follow-up is triggered, show how the system probes deeper into edge cases before proceeding.
-
-4. **Candidate Scorecard & PDF Export (2:00 - 3:00)**:
-   - Advance through the remaining questions to reach the **Technical Scorecard**.
-   - Show the final fit percentage, hiring recommendation (*Strong Hire / Hire*), rubric averages, identified strengths, growth areas, and the complete question-by-question audit trail with textbook citations.
-   - Click **"Print / Save PDF Report"** to show the print-ready executive scorecard.
 
 ---
 
