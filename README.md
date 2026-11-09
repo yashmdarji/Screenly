@@ -1,6 +1,7 @@
 # Screenly 🧠⚡
 > **Autonomous Role-Adaptive Technical Candidate Screening System Powered by Grounded Retrieval-Augmented Generation (RAG)**
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-screenly--60i4.onrender.com-46E3B7?style=flat-square&logo=render&logoColor=white)](https://screenly-60i4.onrender.com/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI_0.110+-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python)](https://python.org)
 [![React](https://img.shields.io/badge/Frontend-React_18_%2B_Tailwind-61DAFB?style=flat-square&logo=react)](https://react.dev)
@@ -11,7 +12,17 @@ Screenly is a modular, production-ready AI interview and screening system design
 
 ---
 
+## 🌐 Live Web Application
+Test the complete application live in your browser with zero installation:
+👉 **[https://screenly-60i4.onrender.com](https://screenly-60i4.onrender.com/)**
+
+> [!NOTE]
+> *Hosted on Render's cloud platform. If the service is waking up from an idle state, the initial cold-start spin-up may take ~30–45 seconds. Subsequent interactions respond in milliseconds.*
+
+---
+
 ## 📑 Table of Contents
+- [Live Web Application](#-live-web-application)
 - [Key Features](#-key-features)
 - [System Architecture](#-system-architecture)
 - [System Flow & Pipeline](#-system-flow--pipeline)
@@ -279,6 +290,8 @@ Screenly/
 ---
 
 ## 🚀 Quick Start Guide
+
+> 💡 **Prefer testing immediately without local setup?** Launch the live production app directly at **[screenly-60i4.onrender.com](https://screenly-60i4.onrender.com/)**.
 
 ### Prerequisites
 - **Python 3.10+**
