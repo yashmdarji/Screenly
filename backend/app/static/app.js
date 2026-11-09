@@ -220,19 +220,33 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
   }
 
   playTTS() {
-    if (!window.speechSynthesis || !this.currentQuestion) {
-      alert("Speech synthesis is not supported or no question is active.");
+    if (!window.speechSynthesis) {
+      alert("Speech synthesis is not supported in this browser.");
       return;
     }
+    const textToSpeak = this.currentQuestion ? this.currentQuestion.question_text : document.getElementById("question-text")?.innerText;
+    if (!textToSpeak) return;
+
+    // Chrome bugfix: cancel and resume speech queue
     window.speechSynthesis.cancel();
-    this.currentUtterance = new SpeechSynthesisUtterance(this.currentQuestion.question_text);
-    this.currentUtterance.rate = 1.0;
-    this.currentUtterance.pitch = 1.0;
+    window.speechSynthesis.resume();
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.lang = "en-US";
+
+    // Set voice if available
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      const enVoice = voices.find(v => v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Natural") || v.name.includes("David") || v.name.includes("Zira"))) || voices[0];
+      if (enVoice) utterance.voice = enVoice;
+    }
 
     const statusEl = document.getElementById("tts-status");
     const pauseLabel = document.getElementById("tts-pause-label");
 
-    this.currentUtterance.onstart = () => {
+    utterance.onstart = () => {
       if (statusEl) {
         statusEl.innerText = "Speaking...";
         statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 animate-pulse";
@@ -240,7 +254,7 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
       if (pauseLabel) pauseLabel.innerText = "Pause";
     };
 
-    this.currentUtterance.onpause = () => {
+    utterance.onpause = () => {
       if (statusEl) {
         statusEl.innerText = "Paused";
         statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300";
@@ -248,7 +262,7 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
       if (pauseLabel) pauseLabel.innerText = "Resume";
     };
 
-    this.currentUtterance.onresume = () => {
+    utterance.onresume = () => {
       if (statusEl) {
         statusEl.innerText = "Speaking...";
         statusEl.className = "text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 animate-pulse";
@@ -256,15 +270,18 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
       if (pauseLabel) pauseLabel.innerText = "Pause";
     };
 
-    this.currentUtterance.onend = () => {
+    utterance.onend = () => {
       this.resetTTSUI();
     };
 
-    this.currentUtterance.onerror = () => {
+    utterance.onerror = (e) => {
+      console.warn("TTS error:", e);
       this.resetTTSUI();
     };
 
-    window.speechSynthesis.speak(this.currentUtterance);
+    // Keep global reference to prevent Chrome GC bug
+    window._activeUtterance = utterance;
+    window.speechSynthesis.speak(utterance);
   }
 
   pauseOrResumeTTS() {
@@ -656,5 +673,10 @@ EXPERIENCE: Backend Intern at ScaleGrid - architected multi-tier caching with Re
 // Instantiate on load
 window.addEventListener("DOMContentLoaded", () => {
   window.app = new ScreenlyApp();
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.speechSynthesis.getVoices();
+    };
+  }
   if (window.lucide) window.lucide.createIcons();
 });
