@@ -1,0 +1,92 @@
+{
+  "book_title": "Machine Learning",
+  "author": "Tom M. Mitchell",
+  "role": "AI/ML Engineer",
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "chapter_title": "Introduction to Machine Learning and Well-Posed Learning Problems",
+      "sections": [
+        {
+          "section_id": "1.1",
+          "section_title": "Definition of Learning Problem",
+          "content": "A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E. For example, in a checkers learning problem: Task T is playing checkers; Performance measure P is percent of games won against opponents; Training experience E is playing practice games against itself. Designing a learning system requires choosing the training experience, the target function to be learned, its representation, and an effective learning algorithm."
+        },
+        {
+          "section_id": "1.2",
+          "section_title": "Target Function Representation Trade-offs",
+          "content": "Choosing the target function representation is a crucial design choice. A highly expressive representation allows approximating complex target functions, but typically requires more training data to avoid generalization error and often leads to higher computational complexity. Conversely, a restricted representation space limits expressiveness but simplifies search and reduces variance."
+        }
+      ]
+    },
+    {
+      "chapter_number": 3,
+      "chapter_title": "Decision Tree Learning",
+      "sections": [
+        {
+          "section_id": "3.4",
+          "section_title": "Entropy and Information Gain in ID3",
+          "content": "Information Gain measures the expected reduction in entropy caused by partitioning instances according to a given attribute. Entropy characterizes the impurity of an arbitrary collection of examples S. Entropy(S) = -p+ log2(p+) - p- log2(p-), where p+ is proportion of positive examples and p- is proportion of negative examples. Gain(S, A) = Entropy(S) - sum((|Sv| / |S|) * Entropy(Sv)) over all values v of attribute A. The ID3 algorithm selects the attribute that maximizes Information Gain at each node."
+        },
+        {
+          "section_id": "3.7",
+          "section_title": "Overfitting and Post-Pruning in Decision Trees",
+          "content": "A hypothesis h is said to overfit the training data if there exists an alternative hypothesis h' such that h has smaller error on training examples than h', but h' has smaller error over the entire distribution of instances. Methods to avoid overfitting in decision trees include: stopping tree growth early before it reaches point of perfectly classifying training data; or allowing the tree to overfit and then post-pruning nodes using validation set (Reduced-Error Pruning) or Rule Post-Pruning using Minimum Description Length principles."
+        }
+      ]
+    },
+    {
+      "chapter_number": 4,
+      "chapter_title": "Artificial Neural Networks and Backpropagation",
+      "sections": [
+        {
+          "section_id": "4.4",
+          "section_title": "The Perceptron and Linearly Separable Functions",
+          "content": "A perceptron takes a vector of real-valued inputs, calculates a linear combination of these inputs, then outputs a 1 if the result is greater than some threshold and -1 otherwise: o(x) = sgn(w . x). A single perceptron can only learn linearly separable functions (like AND, OR), and cannot represent non-linear decision boundaries such as the XOR function. This limitation necessitated multi-layer feedforward networks with non-linear activation functions."
+        },
+        {
+          "section_id": "4.5",
+          "section_title": "Backpropagation Algorithm and Gradient Descent",
+          "content": "The Backpropagation algorithm learns weights for a multilayer network with fixed architecture. It employs gradient descent to minimize the squared error between network output values and target values for training examples. Using the chain rule of calculus, error signals delta are propagated backwards from output units to hidden units. For an output unit k with sigmoid activation, delta_k = o_k * (1 - o_k) * (t_k - o_k). For a hidden unit j, delta_j = o_j * (1 - o_j) * sum(w_kj * delta_k). Weight updates follow delta_w = eta * delta * x."
+        },
+        {
+          "section_id": "4.6",
+          "section_title": "Local Minima and Momentum in Optimization",
+          "content": "Because the error surface of a multilayer neural network contains many local minima, gradient descent is not guaranteed to find the global minimum. To mitigate this and accelerate convergence through flat plateaus and narrow ravines, a momentum term alpha is added to weight updates: delta_w(t) = eta * delta * x + alpha * delta_w(t-1). Momentum causes gradient steps in consistent directions to accumulate velocity while damping oscillations in perpendicular directions."
+        }
+      ]
+    },
+    {
+      "chapter_number": 6,
+      "chapter_title": "Bayesian Learning and Maximum A Posteriori Estimation",
+      "sections": [
+        {
+          "section_id": "6.2",
+          "section_title": "Bayes Theorem and MAP Hypothesis",
+          "content": "Bayes theorem provides a way to calculate the probability of a hypothesis given observed training data: P(h|D) = (P(D|h) * P(h)) / P(D). The Maximum A Posteriori (MAP) hypothesis is the hypothesis that maximizes P(h|D), equivalent to maximizing P(D|h) * P(h). When all hypotheses are assumed equally likely a priori (uniform prior P(h)), the MAP hypothesis simplifies to the Maximum Likelihood (ML) hypothesis, which maximizes P(D|h)."
+        },
+        {
+          "section_id": "6.9",
+          "section_title": "Naive Bayes Classifier and Conditional Independence",
+          "content": "The Naive Bayes classifier applies Bayes rule under the assumption that attribute values are conditionally independent given the target class value: P(a1, a2, ... an | v_j) = product(P(a_i | v_j)). While this independence assumption is often violated in practice (e.g. word co-occurrences in text classification), the Naive Bayes classifier performs surprisingly well because accurate class ranking does not require perfectly calibrated probability estimates, only that the maximum probability class matches the true class."
+        }
+      ]
+    },
+    {
+      "chapter_number": 7,
+      "chapter_title": "Computational Learning Theory and Bias-Variance",
+      "sections": [
+        {
+          "section_id": "7.2",
+          "section_title": "Probably Approximately Correct (PAC) Learning",
+          "content": "The PAC learning framework formalizes the computational complexity and sample complexity required for a learner to output a hypothesis with error less than epsilon with probability at least 1 - delta. The sample complexity m for a finite hypothesis space H is bounded by m >= (1/epsilon) * (ln(|H|) + ln(1/delta)). This establishes that learnability depends directly on the logarithm of hypothesis space size."
+        },
+        {
+          "section_id": "7.4",
+          "section_title": "Vapnik-Chervonenkis (VC) Dimension",
+          "content": "The VC dimension of a hypothesis space H measures its capacity to shatter a set of instances. A set of instances S is shattered by H if for every possible dichotomous labeling of S, there exists a hypothesis in H consistent with that labeling. The VC dimension of linear decision surfaces in d dimensions is d + 1. VC dimension provides sample complexity bounds for infinite hypothesis spaces without requiring assumptions about underlying distributions."
+        }
+      ]
+    }
+  ]
+}

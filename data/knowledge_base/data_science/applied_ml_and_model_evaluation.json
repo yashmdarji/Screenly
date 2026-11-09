@@ -1,0 +1,39 @@
+{
+  "book_title": "Mastering Machine Learning with Python & Scikit-Learn",
+  "author": "Andreas Mueller & Sarah Guido",
+  "role": "Data Scientist",
+  "chapters": [
+    {
+      "chapter_number": 2,
+      "chapter_title": "Evaluation Metrics for Imbalanced Datasets",
+      "sections": [
+        {
+          "section_id": "2.1",
+          "section_title": "Precision, Recall, F1-Score, and PR-AUC",
+          "content": "Accuracy is misleading on imbalanced datasets (e.g. 99% accuracy by predicting only majority class). Precision = TP / (TP + FP) measures exactness (false alarm cost). Recall = TP / (TP + FN) measures completeness (cost of missed detections). F1-Score is the harmonic mean: 2 * (Precision * Recall) / (Precision + Recall). For extreme class imbalance (such as fraud or disease detection), the Precision-Recall Curve and Area Under PR Curve (PR-AUC) are strictly more informative than ROC-AUC because ROC-AUC can remain artificially elevated due to high true negative rates."
+        },
+        {
+          "section_id": "2.2",
+          "section_title": "Cost-Sensitive Learning and Resampling",
+          "content": "Handling severe class imbalance can be achieved through algorithm-level adjustments (cost-sensitive loss weighting such as class_weight='balanced') or data-level resampling (SMOTE - Synthetic Minority Over-sampling Technique, Random Undersampling). Crucially, over-sampling must be performed inside each cross-validation fold after splitting to avoid synthetic data leaking across folds."
+        }
+      ]
+    },
+    {
+      "chapter_number": 4,
+      "chapter_title": "Feature Engineering and Selection",
+      "sections": [
+        {
+          "section_id": "4.1",
+          "section_title": "Encoding Categorical Features and Target Encoding",
+          "content": "One-Hot Encoding converts categorical variables into binary indicator columns but introduces high dimensionality and multicollinearity for high-cardinality features. Target Encoding (mean target replacement) maps categories to average target values, offering compact representation but prone to severe target leakage and overfitting without smoothing (empirical Bayes smoothing) and out-of-fold target encoding."
+        },
+        {
+          "section_id": "4.2",
+          "section_title": "Feature Selection Techniques",
+          "content": "Feature selection methods fall into three paradigms: Filter methods (Pearson correlation, ANOVA, Mutual Information) rank features independently of model training; Wrapper methods (Recursive Feature Elimination - RFE, Forward/Backward selection) evaluate feature subsets by iteratively training candidate models; Embedded methods (Lasso L1 penalty, tree-based feature importance, SHAP values) perform selection directly within learning objective."
+        }
+      ]
+    }
+  ]
+}

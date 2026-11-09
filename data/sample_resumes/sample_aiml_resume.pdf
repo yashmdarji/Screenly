@@ -1,0 +1,22 @@
+%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length 2888 >>
+stream
+BT /F1 11 Tf 14 TL 50 750 Td (Alex Chen) Tj T* (Email: alex.chen@example.com | Phone: +1-555-019-2834 | GitHub: github.com/alexchen-ai | Portfolio: alexchen.dev) Tj T* (OBJECTIVE) Tj T* (Passionate AI/ML Engineer with strong mathematical foundations in machine learning algorithms, deep learning, and retrieval-augmented systems. Seeking an AI/ML engineering role to build robust, scalable intelligence architectures.) Tj T* (EDUCATION) Tj T* (Bachelor of Science in Computer Science & Applied Mathematics) Tj T* (University of California, Berkeley | GPA: 3.88 / 4.0 | Graduated: May 2024) Tj T* (Relevant Coursework: Machine Learning \(CS 189\), Deep Learning for Computer Vision, Linear Algebra, Probability Theory, Data Structures & Algorithms.) Tj T* (TECHNICAL SKILLS) Tj T* (- Programming: Python, C++, SQL, Bash) Tj T* (- Frameworks & Libraries: PyTorch, TensorFlow, HuggingFace Transformers, Scikit-Learn, NumPy, Pandas, LangChain, ChromaDB) Tj T* (- Deep Learning & NLP: Large Language Models \(LLMs\), RAG pipelines, fine-tuning \(LoRA, QLoRA\), Attention Mechanisms, Word Embeddings) Tj T* (- Machine Learning Foundations: Gradient Descent, Backpropagation, SVMs, Decision Trees, Random Forests, XGBoost, Cross-Validation, Bias-Variance Tradeoff) Tj T* (- MLOps & Tools: Docker, Git, Weights & Biases, FastAPI, Ray, AWS EC2/S3) Tj T* (PROJECTS) Tj T* (1. RAG-Based Document Intelligence Engine \(PyTorch, HuggingFace, FastAPI\)) Tj T* (- Built an end-to-end question answering system over 10,000+ scientific research papers with semantic vector search and hybrid BM25 retrieval.) Tj T* (- Reduced hallucination rate by 34% through reciprocal rank fusion \(RRF\) and dynamic context chunking with 15% overlap.) Tj T* (- Deployed FastAPI microservice inside Docker container serving sub-150ms inference latency.) Tj T* (2. Neural Image Segmentation for Autonomous Driving \(PyTorch, OpenCV\)) Tj T* (- Implemented U-Net and DeepLabV3+ architectures for semantic segmentation on Cityscapes dataset.) Tj T* (- Optimized loss convergence using Focal Loss and Cosine Annealing learning rate schedule, reaching 78.4% mean IoU.) Tj T* (- Accelerated inference by 2.4x via TensorRT post-training INT8 quantization.) Tj T* (3. Distributed Gradient Boosting Classifier \(Python, NumPy, Scikit-Learn\)) Tj T* (- Engineered a lightweight gradient boosted tree engine from scratch implementing second-order Taylor expansion gradients.) Tj T* (- Evaluated performance on imbalanced tabular datasets using stratified k-fold and PR-AUC metrics.) Tj T* (EXPERIENCE) Tj T* (Machine Learning Intern | NeuroTech Systems | June 2023 - August 2023) Tj T* (- Designed automated feature selection and hyperparameter optimization pipelines for tabular predictive models.) Tj T* (- Monitored model drift and prediction latency in production utilizing custom drift-detection statistical metrics.) Tj T* ET
+endstream
+endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000350 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+430
+%%EOF

@@ -1,0 +1,60 @@
+{
+  "book_title": "The Hundred-Page Machine Learning Book",
+  "author": "Andriy Burkov",
+  "role": "AI/ML Engineer",
+  "chapters": [
+    {
+      "chapter_number": 3,
+      "chapter_title": "Fundamental Algorithms: SVM and Logistic Regression",
+      "sections": [
+        {
+          "section_id": "3.1",
+          "section_title": "Support Vector Machines and Maximum Margin Hyperplane",
+          "content": "Support Vector Machine (SVM) finds a hyperplane separating classes with the maximum geometric margin. The decision rule is sign(w . x - b). The margin is 2 / ||w||, so maximizing margin is equivalent to minimizing 1/2 * ||w||^2 subject to y_i * (w . x_i - b) >= 1. Support vectors are the training examples that lie directly on the margin boundary. The soft-margin SVM introduces slack variables xi_i and regularization parameter C to penalize misclassifications, balancing margin maximization with training error."
+        },
+        {
+          "section_id": "3.2",
+          "section_title": "The Kernel Trick and Non-Linear Decision Boundaries",
+          "content": "When data is not linearly separable in the original feature space, the Kernel Trick maps inputs implicitly into a higher-dimensional reproducing kernel Hilbert space using a kernel function K(x, z) = phi(x) . phi(z), without explicitly computing coordinates in that high-dimensional space. Common kernels include the Radial Basis Function (RBF/Gaussian) kernel K(x, z) = exp(-gamma * ||x - z||^2) and Polynomial kernel K(x, z) = (x . z + c)^d."
+        }
+      ]
+    },
+    {
+      "chapter_number": 5,
+      "chapter_title": "Basic Practice: Overfitting, Regularization, and Validation",
+      "sections": [
+        {
+          "section_id": "5.2",
+          "section_title": "Bias-Variance Decomposition",
+          "content": "Expected prediction error can be decomposed into: Bias^2 + Variance + Irreducible Noise. Bias represents error introduced by approximating a real-world complex problem by a much simpler model (underfitting). Variance represents sensitivity of the model to small fluctuations in the training dataset (overfitting). Highly flexible models like deep neural networks or unconstrained decision trees have low bias but high variance; constrained models like linear regression have high bias but low variance."
+        },
+        {
+          "section_id": "5.3",
+          "section_title": "L1 (Lasso) vs L2 (Ridge) Regularization",
+          "content": "Regularization adds a penalty term to the loss function to constrain model complexity. L2 regularization (Ridge) adds lambda * sum(w_i^2), shrinking weights toward zero smoothly and handling multicollinearity well. L1 regularization (Lasso) adds lambda * sum(|w_i|), which creates sparse weight vectors by driving non-essential feature weights exactly to zero due to the diamond geometry of the L1 norm constraint ball, effectively performing embedded feature selection."
+        },
+        {
+          "section_id": "5.5",
+          "section_title": "Cross-Validation and Data Leakage Prevention",
+          "content": "K-fold cross-validation partitions training data into K equal folds, training on K-1 folds and validating on the remaining fold iteratively to ensure robust out-of-sample evaluation. Data leakage occurs when information from test/validation sets inadvertently leaks into the training pipeline, such as fitting scalers, imputers, or feature selectors on the entire dataset prior to splitting. All preprocessing must be fitted strictly on the training fold only."
+        }
+      ]
+    },
+    {
+      "chapter_number": 7,
+      "chapter_title": "Ensemble Learning and Gradient Boosting",
+      "sections": [
+        {
+          "section_id": "7.1",
+          "section_title": "Bagging and Random Forests",
+          "content": "Bootstrap Aggregating (Bagging) trains multiple independent models on bootstrapped subsets of the training set (sampling with replacement) and averages their predictions to reduce variance without increasing bias. Random Forest enhances bagging by introducing random feature subspace selection at each split, decorrelating individual decision trees and leading to substantially better ensemble generalization."
+        },
+        {
+          "section_id": "7.2",
+          "section_title": "Gradient Boosting and Residual Minimization",
+          "content": "Boosting builds models sequentially where each new weak learner is trained to predict the pseudo-residuals (negative gradient of the loss function) of the existing ensemble. Unlike AdaBoost which re-weights data points, Gradient Boosted Decision Trees (GBDT) optimize arbitrary differentiable loss functions via gradient descent in function space. Modern implementations like XGBoost and LightGBM add second-order Taylor approximations, tree pruning, and column subsampling."
+        }
+      ]
+    }
+  ]
+}

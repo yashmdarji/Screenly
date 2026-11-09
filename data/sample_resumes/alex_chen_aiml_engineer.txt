@@ -1,0 +1,37 @@
+Alex Chen
+Email: alex.chen@example.com | Phone: +1-555-019-2834 | GitHub: github.com/alexchen-ai | Portfolio: alexchen.dev
+
+OBJECTIVE
+Passionate AI/ML Engineer with strong mathematical foundations in machine learning algorithms, deep learning, and retrieval-augmented systems. Seeking an AI/ML engineering role to build robust, scalable intelligence architectures.
+
+EDUCATION
+Bachelor of Science in Computer Science & Applied Mathematics
+University of California, Berkeley | GPA: 3.88 / 4.0 | Graduated: May 2024
+Relevant Coursework: Machine Learning (CS 189), Deep Learning for Computer Vision, Linear Algebra, Probability Theory, Data Structures & Algorithms.
+
+TECHNICAL SKILLS
+- Programming: Python, C++, SQL, Bash
+- Frameworks & Libraries: PyTorch, TensorFlow, HuggingFace Transformers, Scikit-Learn, NumPy, Pandas, LangChain, ChromaDB
+- Deep Learning & NLP: Large Language Models (LLMs), RAG pipelines, fine-tuning (LoRA, QLoRA), Attention Mechanisms, Word Embeddings
+- Machine Learning Foundations: Gradient Descent, Backpropagation, SVMs, Decision Trees, Random Forests, XGBoost, Cross-Validation, Bias-Variance Tradeoff
+- MLOps & Tools: Docker, Git, Weights & Biases, FastAPI, Ray, AWS EC2/S3
+
+PROJECTS
+1. RAG-Based Document Intelligence Engine (PyTorch, HuggingFace, FastAPI)
+- Built an end-to-end question answering system over 10,000+ scientific research papers with semantic vector search and hybrid BM25 retrieval.
+- Reduced hallucination rate by 34% through reciprocal rank fusion (RRF) and dynamic context chunking with 15% overlap.
+- Deployed FastAPI microservice inside Docker container serving sub-150ms inference latency.
+
+2. Neural Image Segmentation for Autonomous Driving (PyTorch, OpenCV)
+- Implemented U-Net and DeepLabV3+ architectures for semantic segmentation on Cityscapes dataset.
+- Optimized loss convergence using Focal Loss and Cosine Annealing learning rate schedule, reaching 78.4% mean IoU.
+- Accelerated inference by 2.4x via TensorRT post-training INT8 quantization.
+
+3. Distributed Gradient Boosting Classifier (Python, NumPy, Scikit-Learn)
+- Engineered a lightweight gradient boosted tree engine from scratch implementing second-order Taylor expansion gradients.
+- Evaluated performance on imbalanced tabular datasets using stratified k-fold and PR-AUC metrics.
+
+EXPERIENCE
+Machine Learning Intern | NeuroTech Systems | June 2023 - August 2023
+- Designed automated feature selection and hyperparameter optimization pipelines for tabular predictive models.
+- Monitored model drift and prediction latency in production utilizing custom drift-detection statistical metrics.

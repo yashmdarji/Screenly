@@ -1,0 +1,32 @@
+Priya Patel
+Email: priya.patel@example.com | Phone: +1-555-082-9912 | GitHub: github.com/priyapatel-dev | LinkedIn: linkedin.com/in/priyapatel-backend
+
+PROFESSIONAL SUMMARY
+Backend Engineer with 2+ years of experience designing high-throughput distributed microservices, RESTful and gRPC APIs, and optimized relational and NoSQL storage pipelines. Passionate about system scalability, concurrency, and resilient cloud architectures.
+
+TECHNICAL SKILLS
+- Languages: Python, Go, SQL, JavaScript/TypeScript
+- Backend Frameworks: FastAPI, Flask, Django, Gin, Node.js/Express
+- Databases & Storage: PostgreSQL, MySQL, Redis, MongoDB, SQLAlchemy, Alembic, DynamoDB
+- Distributed Systems & Architecture: Microservices, Apache Kafka, RabbitMQ, REST APIs, gRPC, Docker, Kubernetes, Nginx
+- Cloud & DevOps: AWS (EC2, S3, RDS, Lambda), GitHub Actions CI/CD, Prometheus, Grafana, OpenTelemetry
+- Concepts: ACID transactions, B-Tree indexing, Cache-aside pattern, Distributed locking, Concurrency, Sharding
+
+WORK EXPERIENCE
+Backend Engineering Intern | ScaleGrid Cloud Solutions | Jan 2024 - Present
+- Designed and maintained high-throughput REST APIs handling 4.5M daily requests with p99 latency under 45ms using FastAPI and AsyncIO.
+- Architected multi-tier caching with Redis using cache-aside pattern and single-flight query locking, reducing primary PostgreSQL read load by 62%.
+- Engineered asynchronous notification delivery pipeline leveraging RabbitMQ and Celery with exponential backoff and dead-letter exchanges.
+- Diagnosed database query bottlenecks via EXPLAIN ANALYZE, creating targeted compound indexes that cut slow queries by 75%.
+
+PROJECTS
+1. Distributed Idempotent Payment Gateway (Python, FastAPI, Redis, PostgreSQL)
+- Developed an ACID-compliant mock payment processing service enforcing idempotency keys with Redis distributed locks.
+- Implemented transactional outbox pattern to guarantee eventual consistency between SQL records and Kafka event stream.
+
+2. Real-Time Collaborative Document Backend (Go, WebSockets, PostgreSQL)
+- Built high-concurrency WebSocket gateway handling 15,000 concurrent socket connections using Go goroutines and channel pools.
+- Managed conflict-free replicated data types (CRDTs) to ensure convergence across simultaneous editing sessions.
+
+EDUCATION
+B.Tech in Computer Science and Engineering | National Institute of Technology | Graduated 2024 | GPA: 8.7 / 10.0

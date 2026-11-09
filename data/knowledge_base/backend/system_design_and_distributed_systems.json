@@ -1,0 +1,71 @@
+{
+  "book_title": "Principles of Backend Engineering & Distributed Systems",
+  "author": "Martin Kleppmann & Engineering Guild",
+  "role": "Backend Engineer",
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "chapter_title": "Data Storage, Indexing, and Query Optimization",
+      "sections": [
+        {
+          "section_id": "1.1",
+          "section_title": "B-Trees vs Log-Structured Merge (LSM) Trees",
+          "content": "B-Trees are balanced search trees storing fixed-size blocks (typically 4KB-8KB) with high branching factor, providing O(log N) point lookups and range scans with in-place page updates. Relational databases like PostgreSQL and MySQL InnoDB use B+ trees. In contrast, LSM-trees (used in RocksDB, Cassandra) buffer writes in an in-memory MemTable, flush sequentially to immutable SSTables on disk, and perform background compaction. LSM-trees provide significantly higher write throughput by eliminating random I/O at the expense of read amplification and compaction CPU overhead."
+        },
+        {
+          "section_id": "1.2",
+          "section_title": "Database Indexing Strategies and Query Execution Plans",
+          "content": "Composite indexes must follow the leftmost prefix rule to be utilized effectively. Covered queries satisfy all requested fields directly from index leaf pages without fetching table heap records. Slow queries should be diagnosed using EXPLAIN ANALYZE to detect sequential table scans, suboptimal join algorithms (Nested Loop vs Hash Join vs Merge Join), and high cardinality filter misses. Over-indexing degrades write performance because every INSERT/UPDATE/DELETE requires updating all associated index structures."
+        }
+      ]
+    },
+    {
+      "chapter_number": 2,
+      "chapter_title": "Caching Architecture and Cache Invalidation",
+      "sections": [
+        {
+          "section_id": "2.1",
+          "section_title": "Cache Patterns: Cache-Aside vs Write-Through vs Write-Behind",
+          "content": "In Cache-Aside (Lazy Loading), application code reads from cache; on a cache miss, it queries the database and writes the result to cache. In Write-Through, writes synchronously update cache and database together before responding, guaranteeing consistency. In Write-Behind (Write-Back), writes update cache immediately and asynchronously batch-flush to database, offering ultra-low write latency at the risk of data loss if the cache node crashes before flushing."
+        },
+        {
+          "section_id": "2.2",
+          "section_title": "Cache Stampede, Penetration, and Invalidation Race Conditions",
+          "content": "Cache stampede (thundering herd) occurs when a hot cache key expires simultaneously under heavy traffic, causing thousands of concurrent requests to overwhelm the database. Mitigation strategies include mutex locking (single-flight/probabilistic early expiration like XFetch) or background cron refresh. Cache penetration occurs when queries for non-existent keys bypass cache repeatedly; mitigations include Bloom filters or caching null objects with short TTL."
+        }
+      ]
+    },
+    {
+      "chapter_number": 3,
+      "chapter_title": "Concurrency, Transactions, and Isolation Levels",
+      "sections": [
+        {
+          "section_id": "3.1",
+          "section_title": "ACID Properties and Isolation Levels",
+          "content": "SQL standard isolation levels address specific concurrency anomalies: Read Uncommitted permits Dirty Reads. Read Committed prevents dirty reads using read locks or row snapshots. Repeatable Read prevents Non-Repeatable Reads via Multi-Version Concurrency Control (MVCC) snapshots. Serializable prevents Phantom Reads and write skew using two-phase locking (2PL) or Serializable Snapshot Isolation (SSI). MVCC allows readers to never block writers and writers to never block readers."
+        },
+        {
+          "section_id": "3.2",
+          "section_title": "Distributed Locks and Idempotency",
+          "content": "Distributed locks (e.g. Redis Redlock or ZooKeeper ephemeral sequential nodes) coordinate exclusive access across stateless application nodes. To prevent stale operations caused by GC pauses or network delays after lock expiration, fencing tokens (monotonically increasing version numbers verified by storage layer) are mandatory. Payment and state-changing APIs must enforce idempotency using unique client request tokens stored with transaction status."
+        }
+      ]
+    },
+    {
+      "chapter_number": 4,
+      "chapter_title": "Distributed Systems, Consensus, and API Design",
+      "sections": [
+        {
+          "section_id": "4.1",
+          "section_title": "CAP Theorem and Eventual Consistency",
+          "content": "In a distributed network where network partitions (P) are unavoidable, a system must choose between Consistency (C - every read receives the most recent write or an error) and Availability (A - every non-failing node returns a non-error response without guarantee of latest write). Real-world architectures employ eventual consistency with monotonic reads, read-your-writes guarantees, or CRDTs (Conflict-free Replicated Data Types) paired with asynchronous message queues."
+        },
+        {
+          "section_id": "4.2",
+          "section_title": "Microservices Communication: REST vs gRPC vs Asynchronous Event-Driven",
+          "content": "Synchronous REST over HTTP/1.1 is human-readable and standard for external client ingress, but incurs JSON serialization overhead and text verbosity. gRPC uses HTTP/2 multiplexing, binary Protocol Buffers serialization, and bidirectional streaming, ideal for low-latency internal microservice communication. Asynchronous event-driven patterns with Apache Kafka or RabbitMQ decouple services, provide backpressure buffering, and enable event sourcing with outbox pattern for transactional consistency."
+        }
+      ]
+    }
+  ]
+}
