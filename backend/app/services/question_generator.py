@@ -119,7 +119,19 @@ class QuestionGeneratorService:
 
         # Adaptive questions tailored to role & topics
         if "AI" in target_role or "ML" in target_role:
-            if "Ensemble" in topic:
+            if "Generalization" in topic or "Overfitting" in topic or "Regularization" in topic:
+                question_text = (
+                    f"Regarding model validation and generalization from {book}: Explain the Bias-Variance decomposition of generalization error. "
+                    f"Compare L1 (Lasso) vs L2 (Ridge) regularization mathematically and explain geometrically why L1 creates sparse feature weights while L2 smoothly shrinks them toward zero."
+                )
+                expected = ["Bias^2 + Variance + Irreducible Error", "L1 diamond L1-ball geometry", "Feature sparsity vs shrinkage", "Multicollinearity handling"]
+            elif "SVM" in topic or "Statistical" in topic:
+                question_text = (
+                    f"Drawing from {book} on Support Vector Machines: Explain how the Maximum Margin Hyperplane is formulated mathematically as a constrained optimization problem. "
+                    f"What is the role of support vectors, and how does the Kernel Trick (e.g. RBF kernel) enable non-linear classification without explicit high-dimensional mapping?"
+                )
+                expected = ["Margin maximization 2/||w||", "Support vectors on margin boundary", "Kernel trick phi(x) . phi(z)", "Slack variables for soft margin"]
+            elif "Ensemble" in topic or "Boosting" in topic:
                 question_text = (
                     f"Comparing ensemble paradigms discussed in {book}: How does Bootstrap Aggregation (Bagging) in Random Forests "
                     f"differ in variance and bias reduction from Gradient Boosting (GBDT)? What is the mathematical significance of "
