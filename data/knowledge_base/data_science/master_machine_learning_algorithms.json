@@ -1,0 +1,45 @@
+{
+  "book_title": "Master Machine Learning Algorithms",
+  "author": "Jason Brownlee",
+  "role": "Data Scientist",
+  "chapters": [
+    {
+      "chapter_number": 8,
+      "chapter_title": "Logistic Regression and Gradient Descent Optimization",
+      "sections": [
+        {
+          "section_id": "8.1",
+          "section_title": "Sigmoid Activation and Maximum Likelihood Estimation",
+          "content": "Logistic regression models the posterior probability of binary classes via the logistic sigmoid function sigma(z) = 1 / (1 + exp(-z)). Unlike linear regression which optimizes mean squared error, logistic regression is parameterized through Maximum Likelihood Estimation, minimizing binary cross-entropy (log-loss) using iterative gradient ascent/descent."
+        }
+      ]
+    },
+    {
+      "chapter_number": 11,
+      "chapter_title": "Naive Bayes Algorithm and Conditional Independence",
+      "sections": [
+        {
+          "section_id": "11.1",
+          "section_title": "Bayesian Probability and the Naive Assumption",
+          "content": "Naive Bayes applies Bayes' Theorem to calculate the probability of each hypothesis given observed feature vectors: P(h|D) = P(D|h) * P(h) / P(D). The naive assumption states that all input features are conditionally independent given the class variable. While conditional independence is violated in almost all practical datasets, the classification boundary depends only on the argmax ranking of class scores rather than calibrated probabilities, resulting in highly effective, low-variance models."
+        },
+        {
+          "section_id": "11.2",
+          "section_title": "Laplace Smoothing and Zero-Frequency Handling",
+          "content": "If a categorical feature value does not appear alongside a specific class label in the training set, its conditional probability estimate drops to exactly zero. Because Naive Bayes multiplies all individual feature conditional probabilities together, a single zero probability collapses the entire posterior probability to zero. Laplace smoothing resolves this by adding an alpha constant (typically 1) to both the numerator and denominator."
+        }
+      ]
+    },
+    {
+      "chapter_number": 15,
+      "chapter_title": "Bagging, Random Forests, and Gradient Boosting",
+      "sections": [
+        {
+          "section_id": "15.1",
+          "section_title": "Ensemble Variance Reduction vs Bias Reduction",
+          "content": "Ensemble learning combines predictions from multiple base learners to achieve superior generalization. Bagging (Bootstrap Aggregation) trains independent models on random subsets with replacement, averaging their outputs to reduce model variance. Gradient Boosting builds models additively in sequential rounds, where each new weak decision tree fits the negative gradient (pseudo-residuals) of the loss function, aggressively minimizing bias."
+        }
+      ]
+    }
+  ]
+}

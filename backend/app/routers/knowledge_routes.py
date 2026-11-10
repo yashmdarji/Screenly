@@ -62,6 +62,7 @@ def ingest_custom_knowledge(payload: IngestDocPayload):
         section_title=payload.section_title
     )
     rag_engine.vector_store.build_index()
+    rag_engine.vector_store.save_to_disk()
 
     return {
         "status": "success",

@@ -1,0 +1,45 @@
+{
+  "book_title": "Pattern Recognition and Machine Learning",
+  "author": "Christopher M. Bishop",
+  "role": "AI/ML Engineer",
+  "chapters": [
+    {
+      "chapter_number": 6,
+      "chapter_title": "Kernel Methods and Reproducing Kernel Hilbert Spaces",
+      "sections": [
+        {
+          "section_id": "6.1",
+          "section_title": "Dual Representations and Mercer's Theorem",
+          "content": "Many linear models for regression and classification can be re-cast into an equivalent dual representation in which the predictions are based on linear combinations of a kernel function evaluated at training data points. Under Mercer's theorem, any continuous, symmetric, positive semi-definite kernel function K(x, x') corresponds to an inner product in a transformed Hilbert feature space phi(x)^T phi(x'), enabling non-linear decision surfaces without explicit mapping."
+        },
+        {
+          "section_id": "6.3",
+          "section_title": "Radial Basis Function Kernels and Large-Scale Approximations",
+          "content": "The Gaussian or Radial Basis Function (RBF) kernel K(x, x') = exp(-gamma * ||x - x'||^2) corresponds to an infinite-dimensional feature space. At web scale with millions of data points, computing the N x N Gram matrix incurs O(N^2) memory and O(N^3) solver bottlenecks. Low-rank approximations like the Nystrom method and Random Fourier Features approximate the kernel matrix in linear time O(N)."
+        }
+      ]
+    },
+    {
+      "chapter_number": 7,
+      "chapter_title": "Sparse Kernel Machines and Maximum Margin Classifiers",
+      "sections": [
+        {
+          "section_id": "7.1",
+          "section_title": "Constrained Optimization and Karush-Kuhn-Tucker Conditions",
+          "content": "The Maximum Margin Classifier maximizes the distance 2 / ||w|| between classes, formulated as a constrained quadratic programming problem: min 1/2 ||w||^2 subject to y_n (w^T phi(x_n) + b) >= 1. Introducing Lagrange multipliers a_n >= 0 leads to the dual Lagrangian. By the Karush-Kuhn-Tucker (KKT) complementary slackness conditions, only training points with a_n > 0 act as support vectors that define the boundary."
+        }
+      ]
+    },
+    {
+      "chapter_number": 10,
+      "chapter_title": "Approximate Inference and Variational Methods",
+      "sections": [
+        {
+          "section_id": "10.1",
+          "section_title": "Variational Inference and the Evidence Lower Bound (ELBO)",
+          "content": "In Bayesian models where calculating the true posterior distribution p(Z|X) involves intractable high-dimensional marginal integrals, Variational Inference approximates it using a tractable distribution q(Z). By maximizing the Evidence Lower Bound (ELBO), we minimize the Kullback-Leibler (KL) divergence between q(Z) and the true posterior p(Z|X), transforming complex integration into an optimization problem."
+        }
+      ]
+    }
+  ]
+}

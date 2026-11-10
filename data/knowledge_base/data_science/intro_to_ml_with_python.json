@@ -1,0 +1,39 @@
+{
+  "book_title": "Introduction to Machine Learning with Python",
+  "author": "Andreas C. Müller & Sarah Guido",
+  "role": "Data Scientist",
+  "chapters": [
+    {
+      "chapter_number": 2,
+      "chapter_title": "Supervised Learning Algorithms and Model Complexity",
+      "sections": [
+        {
+          "section_id": "2.3.2",
+          "section_title": "Ridge Regression and L2 Shrinkage",
+          "content": "Ridge regression imposes an L2 penalty on model coefficients, minimizing the sum of squared residuals plus lambda times the squared Euclidean norm of the weight vector. This smoothly shrinks collinear parameters toward zero without setting them strictly to zero, substantially curbing variance and preventing overfitting when features outnumber samples."
+        },
+        {
+          "section_id": "2.3.3",
+          "section_title": "Lasso Regression and Sparse Feature Selection",
+          "content": "Lasso introduces an L1 norm penalty proportional to the absolute values of the coefficients. Due to the geometric sharp vertices of the L1 diamond constraint region touching expanding loss contours directly along coordinate axes, Lasso drives non-predictive weights strictly to zero, yielding sparse, interpretable models with automatic feature selection."
+        }
+      ]
+    },
+    {
+      "chapter_number": 5,
+      "chapter_title": "Model Evaluation, Cross-Validation and Data Leakage",
+      "sections": [
+        {
+          "section_id": "5.1",
+          "section_title": "Stratified K-Fold Cross-Validation",
+          "content": "In imbalanced classification problems where positive targets are scarce, standard random K-fold partitioning risks generating validation folds with zero positive instances. Stratified K-Fold cross-validation enforces that the proportion of each target class in every fold exactly mirrors the overall dataset distribution, ensuring low-variance performance estimates."
+        },
+        {
+          "section_id": "5.3",
+          "section_title": "Metrics for Imbalanced Data: Precision, Recall and ROC-AUC",
+          "content": "On skewed target distributions (e.g. 99% negative cases), overall classification accuracy is misleading since a trivial majority-class predictor achieves 99% accuracy while detecting zero true positives. The Precision-Recall (PR) curve and F1-score evaluate trade-offs focused exclusively on the positive minority class, making PR-AUC far superior to ROC-AUC when true negatives vastly outnumber true positives."
+        }
+      ]
+    }
+  ]
+}

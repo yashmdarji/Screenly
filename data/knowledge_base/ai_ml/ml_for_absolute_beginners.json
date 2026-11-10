@@ -1,0 +1,50 @@
+{
+  "book_title": "Machine Learning for Absolute Beginners",
+  "author": "Oliver Theobald",
+  "role": "AI/ML Engineer",
+  "chapters": [
+    {
+      "chapter_number": 2,
+      "chapter_title": "What is Machine Learning and Core Workflows",
+      "sections": [
+        {
+          "section_id": "2.1",
+          "section_title": "Supervised vs Unsupervised Learning Fundamentals",
+          "content": "Supervised machine learning algorithms learn mappings from labeled input feature vectors to known output targets. In regression tasks, the output is continuous; in classification tasks, the output represents discrete categorical classes. Unsupervised learning analyzes unlabelled datasets to uncover latent clusters, density distributions, and dimensional projections without ground-truth supervisory target labels."
+        },
+        {
+          "section_id": "2.2",
+          "section_title": "Feature Scaling and Normalization",
+          "content": "Features measured on vastly different numerical scales distort gradient descent convergence trajectories and distance-based metric models like K-Nearest Neighbors and Support Vector Machines. Standard standardization rescales data to zero mean and unit variance (z-score), while Min-Max normalization bounds values into a fixed [0, 1] range to ensure balanced parameter updates across disparate dimensions."
+        }
+      ]
+    },
+    {
+      "chapter_number": 4,
+      "chapter_title": "Gradient Descent and Optimization Intuition",
+      "sections": [
+        {
+          "section_id": "4.1",
+          "section_title": "Mini-batch Gradient Descent vs Full-batch and Stochastic GD",
+          "content": "Full-batch gradient descent evaluates the entire dataset before applying each single parameter update, incurring massive memory footprints and slow iteration cycles. Single-sample Stochastic Gradient Descent updates weights after each individual record, generating noisy, oscillatory updates that miss vectorized hardware acceleration. Mini-batch gradient descent splits training data into compact batches (e.g., 32 to 256 samples), combining GPU vectorized tensor throughput with subtle stochastic gradient noise that aids in escaping saddle points."
+        },
+        {
+          "section_id": "4.2",
+          "section_title": "Learning Rate Dynamics and Convergence Stability",
+          "content": "The learning rate hyperparameter alpha controls the step size taken along the negative loss gradient. An excessively large learning rate causes updates to overshoot the loss valley, oscillate unstably, or diverge to infinity. Conversely, an overly minute learning rate traps training in crawling, negligible updates prone to premature stall near zero-gradient plateaus. Practitioners employ momentum and dynamic learning rate decay schedules to guarantee stable convergence."
+        }
+      ]
+    },
+    {
+      "chapter_number": 6,
+      "chapter_title": "Decision Trees and Ensemble Intuition",
+      "sections": [
+        {
+          "section_id": "6.1",
+          "section_title": "Decision Tree Splitting and Overfitting Vulnerability",
+          "content": "A decision tree partitions feature space recursively by choosing splits that maximize information gain or minimize Gini impurity. While intuitive and interpretable, deep unconstrained decision trees easily memorize idiosyncratic training noise, yielding extreme variance and poor out-of-sample generalization. Pruning criteria and ensemble voting are essential to constrain tree depth."
+        }
+      ]
+    }
+  ]
+}

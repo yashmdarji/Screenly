@@ -1,0 +1,34 @@
+{
+  "book_title": "Artificial Intelligence, Machine Learning and Deep Learning",
+  "author": "Mahmood et al.",
+  "role": "AI/ML Engineer",
+  "chapters": [
+    {
+      "chapter_number": 4,
+      "chapter_title": "Deep Neural Network Optimization and Regularization",
+      "sections": [
+        {
+          "section_id": "4.2",
+          "section_title": "Loss Surfaces, Ravines and Polyak Momentum",
+          "content": "Deep neural network loss landscapes exhibit non-convex topologies characterized by ill-conditioned Hessian curvature ravines and flat plateaus. Standard stochastic gradient descent oscillates excessively across high-curvature ravine walls without making forward progress. Polyak momentum introduces a velocity state vector v_t = alpha * v_{t-1} + lr * grad(L), canceling orthogonal oscillations while accumulating downhill kinetic speed along gentle valleys."
+        },
+        {
+          "section_id": "4.5",
+          "section_title": "Distributed Multi-GPU Optimization and Large-Batch Training",
+          "content": "Training modern deep architectures across distributed GPU clusters with large effective batch sizes introduces optimization instability and generalization degradation towards sharp minima. Practitioners employ linear learning rate scaling with warmup schedules, gradient norm clipping to prevent exploding updates, and AdamW to decouple weight decay regularization from gradient-based adaptive moment estimation."
+        }
+      ]
+    },
+    {
+      "chapter_number": 8,
+      "chapter_title": "Sequential Models and Attention Mechanisms",
+      "sections": [
+        {
+          "section_id": "8.1",
+          "section_title": "Recurrent Architectures, LSTMs and Self-Attention",
+          "content": "Standard Recurrent Neural Networks (RNNs) suffer from vanishing and exploding gradients when propagating temporal dependencies across extended time horizons. Long Short-Term Memory (LSTM) and Gated Recurrent Units (GRUs) resolve this via additive cell state channels gated by input, forget, and output operations. Self-attention mechanisms further remove recurrence bottlenecks by computing scaled dot-product attention across all sequence tokens concurrently."
+        }
+      ]
+    }
+  ]
+}

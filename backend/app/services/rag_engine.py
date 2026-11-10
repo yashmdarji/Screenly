@@ -20,7 +20,7 @@ class RAGEngine:
         self._initialize_knowledge_base()
 
     def _initialize_knowledge_base(self):
-        """Loads and indexes all role-specific JSON knowledge files."""
+        """Loads and indexes all role-specific JSON knowledge files into persistent vector database."""
         if not KNOWLEDGE_BASE_DIR.exists():
             return
 
@@ -41,30 +41,36 @@ class RAGEngine:
                     "file": str(file_path.name)
                 })
 
-                for chapter in data.get("chapters", []):
-                    ch_num = chapter.get("chapter_number")
-                    ch_title = chapter.get("chapter_title")
+                # If vector store was not already populated from persistent disk index
+                if not self.vector_store._is_indexed or len(self.vector_store.chunks) == 0:
+                    for chapter in data.get("chapters", []):
+                        ch_num = chapter.get("chapter_number")
+                        ch_title = chapter.get("chapter_title")
 
-                    for section in chapter.get("sections", []):
-                        sec_id = section.get("section_id")
-                        sec_title = section.get("section_title")
-                        content = section.get("content", "")
+                        for section in chapter.get("sections", []):
+                            sec_id = section.get("section_id")
+                            sec_title = section.get("section_title")
+                            content = section.get("content", "")
 
-                        self.vector_store.add_document(
-                            text=content,
-                            role=role,
-                            book_title=book_title,
-                            author=author,
-                            chapter_number=ch_num,
-                            chapter_title=ch_title,
-                            section_id=sec_id,
-                            section_title=sec_title,
-                        )
+                            self.vector_store.add_document(
+                                text=content,
+                                role=role,
+                                book_title=book_title,
+                                author=author,
+                                chapter_number=ch_num,
+                                chapter_title=ch_title,
+                                section_id=sec_id,
+                                section_title=sec_title,
+                            )
             except Exception as e:
                 print(f"[RAGEngine] Error loading {file_path}: {e}")
 
-        self.vector_store.build_index()
-        print(f"[RAGEngine] Successfully indexed {len(self.vector_store.chunks)} chunks across {len(self.indexed_books)} books.")
+        if not self.vector_store._is_indexed or len(self.vector_store.chunks) == 0:
+            self.vector_store.build_index()
+            self.vector_store.save_to_disk()
+            print(f"[RAGEngine] Successfully built and persisted {len(self.vector_store.chunks)} chunks across {len(self.indexed_books)} books to disk.")
+        else:
+            print(f"[RAGEngine] Loaded {len(self.vector_store.chunks)} precomputed chunks from persistent vector database.")
 
     def construct_queries_for_candidate(
         self,
