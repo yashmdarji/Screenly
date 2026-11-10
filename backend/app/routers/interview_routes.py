@@ -51,8 +51,16 @@ def get_current_question(session_id: str, db: Session = Depends(get_db)):
             grounding_chunks=existing_question.grounding_chunks or []
         )
 
-    # Determine adaptive difficulty based on previous response
-    difficulty = "Medium"
+    # Determine baseline difficulty from candidate experience level
+    exp_lower = (session.experience_level or "").lower()
+    if "senior" in exp_lower or "staff" in exp_lower or "lead" in exp_lower:
+        difficulty = "Hard"
+    elif "junior" in exp_lower or "intern" in exp_lower or "entry" in exp_lower:
+        difficulty = "Foundational"
+    else:
+        difficulty = "Medium"
+
+    # Adapt difficulty dynamically based on previous response
     if current_idx > 0:
         prev_response = db.query(CandidateResponse).join(InterviewQuestion).filter(
             InterviewQuestion.session_id == session_id,
@@ -61,7 +69,7 @@ def get_current_question(session_id: str, db: Session = Depends(get_db)):
 
         if prev_response and settings.ENABLE_ADAPTIVE_DIFFICULTY:
             if prev_response.score_overall >= 8.2:
-                difficulty = "Advanced" if current_idx >= 3 else "Hard"
+                difficulty = "Advanced" if ("senior" in exp_lower or current_idx >= 3) else "Hard"
             elif prev_response.score_overall < 5.8:
                 difficulty = "Foundational"
 
@@ -100,7 +108,8 @@ def get_current_question(session_id: str, db: Session = Depends(get_db)):
         question_index=current_idx,
         topic=topic,
         difficulty=difficulty,
-        retrieved_chunks=retrieved_chunks
+        retrieved_chunks=retrieved_chunks,
+        experience_level=session.experience_level or "Mid-Level"
     )
 
     # Persist question to DB for auditability & traceability
